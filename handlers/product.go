@@ -90,7 +90,7 @@ func (h *handlerProduct) CreateProduct(w http.ResponseWriter, r *http.Request) {
 
 	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
 
-	resp, err2 := cld.Upload.Upload(ctx, filepath, uploader.UploadParams{Folder: "dumbmerch"})
+	resp, err2 := cld.Upload.Upload(ctx, filepath, uploader.UploadParams{Folder: "waysfood"})
 
 	if err2 != nil {
 		fmt.Println(err2.Error())
