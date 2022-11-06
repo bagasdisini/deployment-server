@@ -131,7 +131,7 @@ func (h *handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
 
-	resp, err2 := cld.Upload.Upload(ctx, filepath, uploader.UploadParams{Folder: "dumbmerch"})
+	resp, err2 := cld.Upload.Upload(ctx, filepath, uploader.UploadParams{Folder: "waysfood"})
 
 	if err2 != nil {
 		fmt.Println(err2.Error())
@@ -165,7 +165,7 @@ func (h *handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if filepath != "" {
-		user.Image = filepath
+		user.Image = resp.SecureURL
 	}
 
 	if request.Location != "" {
@@ -193,10 +193,23 @@ func (h *handler) UpdateAdmin(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	dataUpload := r.Context().Value("dataFile")
-	filename := ""
+	filepath := ""
+
+	var ctx = context.Background()
+	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+	var API_KEY = os.Getenv("API_KEY")
+	var API_SECRET = os.Getenv("API_SECRET")
 
 	if dataUpload != nil {
-		filename = dataUpload.(string)
+		filepath = dataUpload.(string)
+	}
+
+	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+	resp, err2 := cld.Upload.Upload(ctx, filepath, uploader.UploadParams{Folder: "waysfood"})
+
+	if err2 != nil {
+		fmt.Println(err2.Error())
 	}
 
 	request := usersdto.UpdateUserRequest{
@@ -220,8 +233,8 @@ func (h *handler) UpdateAdmin(w http.ResponseWriter, r *http.Request) {
 		user.Email = request.Email
 	}
 
-	if filename != "" {
-		user.Image = filename
+	if filepath != "" {
+		user.Image = resp.SecureURL
 	}
 
 	if request.Phone != "" {

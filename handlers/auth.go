@@ -140,7 +140,7 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 			Token:    token,
 			Role:     user.Role,
 			Gender:   user.Gender,
-			Image:    "http://localhost:5000/uploads/" + user.Image,
+			Image:    user.Image,
 			Phone:    user.Phone,
 		}
 
@@ -191,7 +191,7 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 			Token:    token,
 			Role:     admin.Role,
 			Gender:   admin.Gender,
-			Image:    "http://localhost:5000/uploads/" + admin.Image,
+			Image:    admin.Image,
 			Phone:    admin.Phone,
 		}
 
@@ -225,7 +225,7 @@ func (h *handlerAuth) CheckAuth(w http.ResponseWriter, r *http.Request) {
 			Role:     user.Role,
 			Gender:   user.Gender,
 			Phone:    user.Phone,
-			Image:    "http://localhost:5000/uploads/" + user.Image,
+			Image:    user.Image,
 		}
 
 		w.Header().Set("Content-Type", "application/json")
@@ -250,7 +250,7 @@ func (h *handlerAuth) CheckAuth(w http.ResponseWriter, r *http.Request) {
 			Role:     user.Role,
 			Gender:   user.Gender,
 			Phone:    user.Phone,
-			Image:    "http://localhost:5000/uploads/" + user.Image,
+			Image:    user.Image,
 		}
 
 		w.Header().Set("Content-Type", "application/json")
