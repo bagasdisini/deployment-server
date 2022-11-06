@@ -12,8 +12,6 @@ type TransactionRepository interface {
 	CreateTransactionUser(transaction models.TransactionUser) (models.TransactionUser, error)
 	UpdateTransactionUser(transaction models.TransactionUser, ID int) (models.TransactionUser, error)
 	DeleteTransactionUser(transaction models.TransactionUser, ID int) (models.TransactionUser, error)
-	UpdateTransaction(status string, ID string) error
-	GetOneTransaction(ID string) (models.TransactionUser, error)
 }
 
 func RepositoryTransaction(db *gorm.DB) *repository {
@@ -50,28 +48,4 @@ func (r *repository) DeleteTransactionUser(transaction models.TransactionUser, I
 	err := r.db.Delete(&transaction).Error
 
 	return transaction, err
-}
-
-func (r *repository) GetOneTransaction(ID string) (models.TransactionUser, error) {
-	var transaction models.TransactionUser
-	err := r.db.Preload("Product").Preload("Product.User").Preload("Buyer").Preload("Seller").First(&transaction, "id = ?", ID).Error
-
-	return transaction, err
-}
-
-func (r *repository) UpdateTransaction(status string, ID string) error {
-	var transaction models.TransactionUser
-	r.db.Preload("Product").First(&transaction, ID)
-
-	if status != transaction.Status && status == "success" {
-		var product models.Product
-		r.db.First(&product, transaction.Product)
-		r.db.Save(&product)
-	}
-
-	transaction.Status = status
-
-	err := r.db.Save(&transaction).Error
-
-	return err
 }
